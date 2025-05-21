@@ -1,0 +1,21 @@
+# Ignore TypeScript output
+*.js
+*.js.map
+
+# Node modules (for future Angular setup)
+node_modules/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Build output
+dist/
+build/
+
+# VS Code settings
+.vscode/

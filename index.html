@@ -46,30 +46,10 @@
         <p><strong>Bailey Dawson</strong><br>Facilitator</p>
       </div>
     </div>
+    <button id="printBtn">Print Certificate</button>
   </div>
 
-  <script>
-    document.getElementById("certificateForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById("studentName").value;
-      const course = document.getElementById("courseName").value;
-      const dateStr = document.getElementById("courseDate").value;
-
-      // Manual date parsing to prevent time zone issues
-      const [year, month, day] = dateStr.split("-");
-      const formattedDate = `${month}/${day}/${year}`;
-      const random = Math.floor(Math.random() * 90000 + 10000);
-
-      document.getElementById("certNameHeader").textContent = name;
-      document.getElementById("certNameBody").textContent = name;
-      document.getElementById("certCourse").textContent = course;
-      document.getElementById("certDate").textContent = formattedDate;
-      document.getElementById("certId").textContent = `3SAI-${year}-${month}-${random}`;
-
-      // Optionally scroll to the certificate
-      document.getElementById("certificateOutput").scrollIntoView({ behavior: "smooth" });
-    });
-  </script>
+  <script src="certificate.js"></script>
 </body>
 </html>
+

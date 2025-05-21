@@ -100,3 +100,26 @@ button {
   font-weight: bold;
   color: #444;
 }
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .certificate, .certificate * {
+    visibility: visible;
+  }
+
+  .form-container,
+  #printBtn {
+    display: none;
+  }
+
+  .certificate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+
