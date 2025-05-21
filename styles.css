@@ -1,0 +1,102 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 20px;
+  background: #f8f8f8;
+  color: #222;
+}
+
+.form-container {
+  background: white;
+  padding: 20px;
+  max-width: 400px;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+form input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+}
+
+.certificate {
+  background: white;
+  width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  border: 2px solid #333;
+  border-radius: 12px;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 30px; /* Smaller size */
+}
+
+.title {
+  text-align: center;
+  color: #003366;
+  font-size: 28px;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.body-text {
+  font-size: 18px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.cert-id {
+  text-align: center;
+  margin-top: 30px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.signatures div {
+  text-align: center;
+  width: 40%;
+}
+
+.sig-placeholder {
+  border-bottom: 1px solid #aaa;
+  height: 50px;
+  margin-bottom: 8px;
+}
+
+.signature-img {
+  height: 40px; /* Reduced from 50px */
+  margin-bottom: 4px;
+}
+
+
+.student-name {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+}
