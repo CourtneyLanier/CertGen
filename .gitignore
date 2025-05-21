@@ -1,5 +1,8 @@
-# Ignore TypeScript output
+# Ignore all JS files except certificate.js
 *.js
+!certificate.js
+
+# Ignore source maps
 *.js.map
 
 # Node modules (for future Angular setup)
