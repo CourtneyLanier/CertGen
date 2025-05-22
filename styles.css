@@ -117,8 +117,8 @@ button {
   }
 
   html, body {
-    width: 11in;
-    height: 8.5in;
+    width: 9in;
+    height: 6.5in;
     margin: 0;
     padding: 0;
   }
@@ -140,8 +140,8 @@ button {
     position: absolute;
     top: 0;
     left: 0;
-    width: 11in;
-    height: 8.5in;
+    width: 9in;
+    height: 6.5in;
     padding: 60px 40px;
     box-sizing: border-box;
     border: 2px solid #333;
