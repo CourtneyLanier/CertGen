@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>3Strand.ai Certificate</title>
+  <title>3Strand.ai CertGen</title>
   <link rel="stylesheet" href="styles.css?v=9">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#003366">
@@ -19,7 +19,23 @@
       <label for="courseName">Course Completed:
         <input type="text" id="courseName" name="courseName" required />
       </label>
-      <label for="courseDate">Date:
+      <label for="classType">Class Type:
+		<select id="classType" name="classType" required>
+			<option value="Training">Training</option>
+			<option value="Course">Course</option>
+			<option value="Class">Class</option>
+			<option value="Workshop">Workshop</option>
+			<option value="AI-Powered Workshop">AI-Powered Workshop</option>
+			<option value="Other">Other</option>
+		</select>
+	  </label>
+
+	  <div id="customTypeWrapper" style="display:none;">
+		<label for="customClassType">Please specify:
+			<input type="text" id="customClassType" />
+		</label>
+	  </div>
+	  <label for="courseDate">Date:
         <input type="date" id="courseDate" name="courseDate" required />
       </label>
       <button type="submit">Generate</button>
@@ -34,8 +50,9 @@
 		This certificate certifies that <strong><span id="certNameBody">[Student Name]</span></strong>
 	</p>
 	<p class="body-text">
-		has completed the <strong><span id="certCourse">[Course Name]</span></strong> course offered by 3 Strand.ai.
+		has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 3 Strand.ai.
 	</p>
+
 
     <p class="body-text">Date: <span id="certDate">[Date]</span></p>
     <p class="cert-id">Certificate ID: <span id="certId">3SAI-YYYY-MM-XXXXX</span></p>

@@ -146,3 +146,6 @@ button {
     box-sizing: border-box;
   }
 }
+#customTypeWrapper {
+  margin-top: 10px;
+}
