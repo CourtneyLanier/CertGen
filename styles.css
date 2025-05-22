@@ -34,8 +34,8 @@ button {
 
 .certificate {
   background: white;
-  width: 816px; /* 8.5 inches */
-  height: 1056px; /* 11 inches */
+  width: 1056px; /* 11 inches in landscape */
+  height: 816px; /* 8.5 inches in landscape */
   margin: 40px auto;
   padding: 40px;
   border: 2px solid #333;
@@ -54,10 +54,9 @@ button {
 .title {
   text-align: center;
   color: #003366;
-  font-size: 35px;
-  font-style: italic;
-  margin-top: 50px;
-  margin-bottom: 40px;
+  font-size: 28px;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 
 .body-text {
@@ -106,7 +105,7 @@ button {
 
 @media print {
   @page {
-    size: 11in 8.5in;
+    size: 11in 8.5in; /* Landscape */
     margin: 0;
   }
 
@@ -114,7 +113,7 @@ button {
     width: 11in;
     height: 8.5in;
     margin: 0;
-    padding: 10;
+    padding: 0;
   }
 
   body * {
@@ -134,8 +133,8 @@ button {
     position: absolute;
     top: 0;
     left: 0;
-    width: 8.5in;
-    height: 11in;
+    width: 11in;
+    height: 8.5in;
     padding: 0.5in;
     box-sizing: border-box;
     border: none;
