@@ -30,3 +30,5 @@ function setupEventListeners() {
     printBtn === null || printBtn === void 0 ? void 0 : printBtn.addEventListener("click", printCertificate);
 }
 document.addEventListener("DOMContentLoaded", setupEventListeners);
+
+document.getElementById("printBtn")?.addEventListener("click", printCertificate);
