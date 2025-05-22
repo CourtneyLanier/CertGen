@@ -12,19 +12,37 @@ function generateCertificate(): void {
   const [year, month, day] = dateStr.split("-");
   const formattedDate = `${month}/${day}/${year}`;
   const random = Math.floor(Math.random() * 90000 + 10000);
+  const certId = `3SAI-${year}-${month}-${random}`;
 
   const selectedType = classTypeSelect.value;
   const classType =
     selectedType === "Other" ? customClassTypeInput.value : selectedType;
 
+  // Update certificate preview
   (document.getElementById("certNameHeader") as HTMLElement).textContent = name;
   (document.getElementById("certNameBody") as HTMLElement).textContent = name;
   (document.getElementById("certCourse") as HTMLElement).textContent = course;
   (document.getElementById("certClassType") as HTMLElement).textContent = classType;
   (document.getElementById("certDate") as HTMLElement).textContent = formattedDate;
-  (document.getElementById("certId") as HTMLElement).textContent = `3SAI-${year}-${month}-${random}`;
+  (document.getElementById("certId") as HTMLElement).textContent = certId;
 
   document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
+
+  // Build LinkedIn link
+  const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
+  const certName = `${course} ${classType}`;
+  const issuer = "3Strand.ai";
+  const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
+
+  const linkedInUrl = `${linkedInBase}` +
+    `&name=${encodeURIComponent(certName)}` +
+    `&organizationName=${encodeURIComponent(issuer)}` +
+    `&issueYear=${encodeURIComponent(year)}` +
+    `&issueMonth=${encodeURIComponent(month)}` +
+    `&certificationId=${encodeURIComponent(certId)}` +
+    `&certificationUrl=${encodeURIComponent(certUrl)}`;
+
+  console.log("LinkedIn link:", linkedInUrl);
 }
 
 function printCertificate() {
@@ -46,11 +64,7 @@ function setupEventListeners() {
   printBtn?.addEventListener("click", printCertificate);
 
   classTypeSelect?.addEventListener("change", () => {
-    if (classTypeSelect.value === "Other") {
-      customTypeWrapper.style.display = "block";
-    } else {
-      customTypeWrapper.style.display = "none";
-    }
+    customTypeWrapper.style.display = (classTypeSelect.value === "Other") ? "block" : "none";
   });
 }
 

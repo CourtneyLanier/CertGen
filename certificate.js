@@ -12,15 +12,30 @@ function generateCertificate() {
     const [year, month, day] = dateStr.split("-");
     const formattedDate = `${month}/${day}/${year}`;
     const random = Math.floor(Math.random() * 90000 + 10000);
+    const certId = `3SAI-${year}-${month}-${random}`;
     const selectedType = classTypeSelect.value;
     const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
+    // Update certificate preview
     document.getElementById("certNameHeader").textContent = name;
     document.getElementById("certNameBody").textContent = name;
     document.getElementById("certCourse").textContent = course;
     document.getElementById("certClassType").textContent = classType;
     document.getElementById("certDate").textContent = formattedDate;
-    document.getElementById("certId").textContent = `3SAI-${year}-${month}-${random}`;
+    document.getElementById("certId").textContent = certId;
     (_a = document.getElementById("certificateOutput")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+    // Build LinkedIn link
+    const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
+    const certName = `${course} ${classType}`;
+    const issuer = "3Strand.ai";
+    const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
+    const linkedInUrl = `${linkedInBase}` +
+        `&name=${encodeURIComponent(certName)}` +
+        `&organizationName=${encodeURIComponent(issuer)}` +
+        `&issueYear=${encodeURIComponent(year)}` +
+        `&issueMonth=${encodeURIComponent(month)}` +
+        `&certificationId=${encodeURIComponent(certId)}` +
+        `&certificationUrl=${encodeURIComponent(certUrl)}`;
+    console.log("LinkedIn link:", linkedInUrl);
 }
 function printCertificate() {
     console.log("Print button clicked!");
@@ -37,12 +52,7 @@ function setupEventListeners() {
     });
     printBtn === null || printBtn === void 0 ? void 0 : printBtn.addEventListener("click", printCertificate);
     classTypeSelect === null || classTypeSelect === void 0 ? void 0 : classTypeSelect.addEventListener("change", () => {
-        if (classTypeSelect.value === "Other") {
-            customTypeWrapper.style.display = "block";
-        }
-        else {
-            customTypeWrapper.style.display = "none";
-        }
+        customTypeWrapper.style.display = (classTypeSelect.value === "Other") ? "block" : "none";
     });
 }
 document.addEventListener("DOMContentLoaded", setupEventListeners);
