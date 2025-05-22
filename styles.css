@@ -1,3 +1,4 @@
+
 body {
   font-family: 'Arial', sans-serif;
   margin: 20px;
@@ -33,25 +34,27 @@ button {
 
 .certificate {
   background: white;
-  width: 800px;
+  width: 816px; /* 8.5 inches */
+  height: 1056px; /* 11 inches */
   margin: 40px auto;
   padding: 40px;
   border: 2px solid #333;
   border-radius: 12px;
   position: relative;
+  box-sizing: border-box;
 }
 
 .logo {
   position: absolute;
   top: 20px;
   right: 20px;
-  height: 30px; /* Smaller size */
+  height: 30px;
 }
 
 .title {
   text-align: center;
   color: #003366;
-  font-size: 35px;
+  font-size: 28px;
   margin-top: 40px;
   margin-bottom: 30px;
 }
@@ -87,10 +90,9 @@ button {
 }
 
 .signature-img {
-  height: 40px; /* Reduced from 50px */
+  height: 40px;
   margin-bottom: 4px;
 }
-
 
 .student-name {
   position: absolute;
@@ -100,10 +102,11 @@ button {
   font-weight: bold;
   color: #444;
 }
+
 @media print {
   @page {
-    size: landscape;
-    margin: 0.5in;
+    size: 8.5in 11in;
+    margin: 0;
   }
 
   body * {
@@ -120,16 +123,14 @@ button {
   }
 
   .certificate {
-    position: static;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 10.25in; /* Fits inside 11in wide paper with 0.5in margin */
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 816px;
+    height: 1056px;
+    padding: 40px;
     box-sizing: border-box;
-    padding: 0.25in;
+    border: none;
   }
 }
-
-@page {
-  size: landscape;
-}
-
