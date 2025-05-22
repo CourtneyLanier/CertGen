@@ -34,14 +34,17 @@ button {
 
 .certificate {
   background: white;
-  width: 1056px; /* 11 inches in landscape */
-  height: 816px; /* 8.5 inches in landscape */
+  width: 1056px; /* 11 inches */
+  height: 816px;  /* 8.5 inches */
   margin: 40px auto;
-  padding: 40px;
+  padding: 60px 40px;
   border: 2px solid #333;
   border-radius: 12px;
   position: relative;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .logo {
@@ -54,20 +57,19 @@ button {
 .title {
   text-align: center;
   color: #003366;
-  font-size: 28px;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  font-size: 32px;
+  margin: 20px 0;
 }
 
 .body-text {
   font-size: 18px;
   text-align: center;
-  margin: 10px 0;
+  margin: 6px 0;
 }
 
 .cert-id {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
   font-weight: bold;
   font-size: 16px;
 }
@@ -75,7 +77,8 @@ button {
 .signatures {
   display: flex;
   justify-content: space-between;
-  margin-top: 60px;
+  margin-top: auto;
+  padding-top: 40px;
 }
 
 .signatures div {
@@ -105,7 +108,7 @@ button {
 
 @media print {
   @page {
-    size: 11in 8.5in; /* Landscape */
+    size: 11in 8.5in;
     margin: 0;
   }
 
@@ -135,10 +138,8 @@ button {
     left: 0;
     width: 11in;
     height: 8.5in;
-    padding: 0.5in;
+    padding: 60px 40px;
     box-sizing: border-box;
-    border: none;
-	background-color: #fff8dc; /* Light tan background for test visibility */;
+    border: 2px solid #333;
   }
 }
-
