@@ -138,5 +138,7 @@ button {
     padding: 0.5in;
     box-sizing: border-box;
     border: none;
+	background-color: #fff8dc; /* Light tan background for test visibility */;
   }
 }
+
