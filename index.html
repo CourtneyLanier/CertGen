@@ -53,7 +53,13 @@
     <button id="printBtn">Print Certificate</button>
   </div>
 
-<script src="certificate.js?v=1.0.1"></script>
+<script src="certificate.js?v=1.0.2"></script>
+<script>
+  document.getElementById("printBtn")?.addEventListener("click", function () {
+    console.log("Print button clicked (inline)!");
+    window.print();
+  });
+</script>
 
 </body>
 </html>

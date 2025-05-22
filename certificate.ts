@@ -20,11 +20,13 @@ function generateCertificate(): void {
   document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
 }
 
-function printCertificate(): void {
+function printCertificate() {
+  console.log("Print button clicked!");
   window.print();
 }
 
-function setupEventListeners(): void {
+
+function setupEventListeners() {
   const form = document.getElementById("certificateForm");
   const printBtn = document.getElementById("printBtn");
 
@@ -35,6 +37,7 @@ function setupEventListeners(): void {
 
   printBtn?.addEventListener("click", printCertificate);
 }
+
 
 document.addEventListener("DOMContentLoaded", setupEventListeners);
 
