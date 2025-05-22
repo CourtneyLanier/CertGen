@@ -49,9 +49,9 @@ button {
 
 .logo {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  height: 30px;
+  top: 30px;
+  right: 30px;
+  height: 40px;
 }
 
 .title {
@@ -137,7 +137,7 @@ button {
 
   .certificate {
     position: relative;
-    margin: 0 auto;
+    margin: 1 auto;
     width: 100%;
     max-width: 10in;
     height: auto;
