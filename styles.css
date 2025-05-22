@@ -115,11 +115,15 @@ button {
   }
 
   .certificate {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
+    margin: 0 auto;
     width: 100%;
+    max-width: 750px; /* Ensures it fits page width */
+    padding: 20px;
+    box-sizing: border-box;
   }
 }
-
+@page {
+  size: landscape;
+}
 
