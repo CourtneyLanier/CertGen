@@ -32,8 +32,6 @@ function generateCertificate() {
     const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
     const certName = `${course} ${classType}`;
     const issuer = "3Strand.ai";
-    console.log("certId:", certId);
-    console.log("certUrl:", certUrl);
     const linkedInUrl = `${linkedInBase}` +
         `&name=${encodeURIComponent(certName)}` +
         `&organizationName=${encodeURIComponent(issuer)}` +
@@ -43,6 +41,7 @@ function generateCertificate() {
         `&expirationMonth=${encodeURIComponent(month)}` +
         `&certificationId=${encodeURIComponent(certId)}` +
         `&certificationUrl=${encodeURIComponent(certUrl)}`;
+    console.log("LinkedIn URL:", linkedInUrl);
     const linkedInAnchor = document.getElementById("linkedInLink");
     linkedInAnchor.href = linkedInUrl;
     linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
@@ -61,10 +60,9 @@ function generateCertificate() {
         linkedInUrl
     };
     const query = new URLSearchParams({ payload: JSON.stringify(payload) });
-    fetch(`https://script.google.com/macros/s/AKfycbzwwL947CajFOokHQPPbiFgdPJY6LPV_IANeUHtiydjest3-crNR-QJ3hhq06NSmlwcRw/exec?${query.toString()}`)
+    fetch(`https://script.google.com/macros/s/AKfycbw7N6911df3waLyvjewatplsUIBa_lFvdLm7PdUUE253XjKQPirmkCaLqt7Oe01yA1pjg/exec?${query.toString()}`)
         .then(res => res.text())
         .then(response => {
-        const statusMessage = document.getElementById("sheetStatus");
         if (response.toLowerCase().includes("success")) {
             statusMessage.textContent = "✅ Student info successfully saved to Google Sheet.";
             statusMessage.style.color = "green";
@@ -76,11 +74,10 @@ function generateCertificate() {
         statusMessage.style.display = "block";
     })
         .catch(err => {
-        const statusMessage = document.getElementById("sheetStatus");
+        console.error("Sheet update failed", err);
         statusMessage.textContent = "❌ Failed to reach the Google Sheet.";
         statusMessage.style.color = "red";
         statusMessage.style.display = "block";
-        console.error(err);
     });
 }
 function printCertificate() {
