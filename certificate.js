@@ -32,6 +32,8 @@ function generateCertificate() {
     const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
     const certName = `${course} ${classType}`;
     const issuer = "3Strand.ai";
+    console.log("certId:", certId);
+    console.log("certUrl:", certUrl);
     const linkedInUrl = `${linkedInBase}` +
         `&name=${encodeURIComponent(certName)}` +
         `&organizationName=${encodeURIComponent(issuer)}` +
@@ -39,8 +41,8 @@ function generateCertificate() {
         `&issueMonth=${encodeURIComponent(month)}` +
         `&expirationYear=${encodeURIComponent(expirationYear)}` +
         `&expirationMonth=${encodeURIComponent(month)}` +
-        `&credentialId=${encodeURIComponent(certId)}` +
-        `&credentialUrl=${encodeURIComponent(certUrl)}`;
+        `&certificationId=${encodeURIComponent(certId)}` +
+        `&certificationUrl=${encodeURIComponent(certUrl)}`;
     const linkedInAnchor = document.getElementById("linkedInLink");
     linkedInAnchor.href = linkedInUrl;
     linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";

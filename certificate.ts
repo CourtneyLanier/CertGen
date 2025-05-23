@@ -39,6 +39,10 @@ function generateCertificate(): void {
   const certName = `${course} ${classType}`;
   const issuer = "3Strand.ai";
 
+  console.log("certId:", certId);
+  console.log("certUrl:", certUrl);
+
+
   const linkedInUrl = `${linkedInBase}` +
     `&name=${encodeURIComponent(certName)}` +
     `&organizationName=${encodeURIComponent(issuer)}` +
@@ -46,8 +50,9 @@ function generateCertificate(): void {
     `&issueMonth=${encodeURIComponent(month)}` +
     `&expirationYear=${encodeURIComponent(expirationYear)}` +
     `&expirationMonth=${encodeURIComponent(month)}` +
-    `&credentialId=${encodeURIComponent(certId)}` +
-    `&credentialUrl=${encodeURIComponent(certUrl)}`;
+    `&certificationId=${encodeURIComponent(certId)}` +
+    `&certificationUrl=${encodeURIComponent(certUrl)}`
+
 
   const linkedInAnchor = document.getElementById("linkedInLink") as HTMLAnchorElement;
   linkedInAnchor.href = linkedInUrl;
