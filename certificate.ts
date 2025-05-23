@@ -73,7 +73,7 @@ function generateCertificate(): void {
     linkedInUrl
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbz9j00oXuqyk9K2xwZWmX6vWqzCTbTlTjnfsFmSf7bWT2PuhxMZ1stlfwxDepzoh0hv/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbxL9Nt4Sr2ZPYRsJyRz4w9YNZz08JsBKqX1yt8XTMncivRHkcBTZgwQCICkSv2W4V2f1A/exec", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
