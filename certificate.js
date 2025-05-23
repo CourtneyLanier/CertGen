@@ -61,7 +61,7 @@ function generateCertificate() {
         savePdf: true
     };
     const query = new URLSearchParams({ payload: JSON.stringify(payload) });
-    fetch(`https://script.google.com/macros/s/AKfycbxFYcRdAl3ClIuygINRjxm2qzhbc4DufeXkKao9Tbsc2KhzhyTSkvCOuRjhAjRniHgZkg/exec?${query.toString()}`)
+    fetch(`https://script.google.com/macros/s/AKfycbzbVFdrhey6mjlHPXoYhTidYGJ-5U2uE6g5W6et8qlp01hQpMRFHqoBQvbS9Q3eVguKNQ/exec?${query.toString()}`)
         .then(res => res.text())
         .then(response => {
         if (response.toLowerCase().includes("success")) {
