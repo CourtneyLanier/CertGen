@@ -43,6 +43,10 @@ function generateCertificate(): void {
     `&certificationUrl=${encodeURIComponent(certUrl)}`;
 
   console.log("LinkedIn link:", linkedInUrl);
+  const linkedInAnchor = document.getElementById("linkedInLink") as HTMLAnchorElement;
+	linkedInAnchor.href = linkedInUrl;
+	linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
+	linkedInAnchor.style.display = "block";
 }
 
 function printCertificate() {

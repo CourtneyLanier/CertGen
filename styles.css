@@ -149,3 +149,8 @@ button {
 #customTypeWrapper {
   margin-top: 10px;
 }
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

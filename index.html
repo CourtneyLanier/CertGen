@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,22 +21,22 @@
         <input type="text" id="courseName" name="courseName" required />
       </label>
       <label for="classType">Class Type:
-		<select id="classType" name="classType" required>
-			<option value="Training">Training</option>
-			<option value="Course">Course</option>
-			<option value="Class">Class</option>
-			<option value="Workshop">Workshop</option>
-			<option value="AI-Powered Workshop">AI-Powered Workshop</option>
-			<option value="Other">Other</option>
-		</select>
-	  </label>
+        <select id="classType" name="classType" required>
+          <option value="Training">Training</option>
+          <option value="Course">Course</option>
+          <option value="Class">Class</option>
+          <option value="Workshop">Workshop</option>
+          <option value="AI-Powered Workshop">AI-Powered Workshop</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
 
-	  <div id="customTypeWrapper" style="display:none;">
-		<label for="customClassType">Please specify:
-			<input type="text" id="customClassType" />
-		</label>
-	  </div>
-	  <label for="courseDate">Date:
+      <div id="customTypeWrapper" style="display:none;">
+        <label for="customClassType">Please specify:
+          <input type="text" id="customClassType" />
+        </label>
+      </div>
+      <label for="courseDate">Date:
         <input type="date" id="courseDate" name="courseDate" required />
       </label>
       <button type="submit">Generate</button>
@@ -47,13 +48,11 @@
     <img src="logo.png" class="logo" alt="3Strand.ai Logo" />
     <h1 class="title">Certificate of Completion</h1>
     <p class="body-text">
-		This certificate certifies that <strong><span id="certNameBody">[Student Name]</span></strong>
-	</p>
-	<p class="body-text">
-		has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 3 Strand.ai.
-	</p>
-
-
+      This certificate certifies that <strong><span id="certNameBody">[Student Name]</span></strong>
+    </p>
+    <p class="body-text">
+      has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 3 Strand.ai.
+    </p>
     <p class="body-text">Date: <span id="certDate">[Date]</span></p>
     <p class="cert-id">Certificate ID: <span id="certId">3SAI-YYYY-MM-XXXXX</span></p>
 
@@ -67,17 +66,11 @@
         <p><strong>Bailey Dawson</strong><br>Facilitator</p>
       </div>
     </div>
-    <button id="printBtn">Print Certificate</button>
+
+    <button id="printBtn" class="no-print">Print Certificate</button>
+    <p><a id="linkedInLink" href="#" target="_blank" class="no-print" style="display:none;">Click here to add your certificate to LinkedIn</a></p>
   </div>
 
-<script src="certificate.js?v=1.0.2"></script>
-<script>
-  document.getElementById("printBtn")?.addEventListener("click", function () {
-    console.log("Print button clicked (inline)!");
-    window.print();
-  });
-</script>
-
+  <script src="certificate.js?v=1.0.2"></script>
 </body>
 </html>
-
