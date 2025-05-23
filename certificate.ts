@@ -37,7 +37,7 @@ function generateCertificate(): void {
 
   const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
   const certName = `${course} ${classType}`;
-  const issuer = "3Strand.ai";
+  const issuer = "3 Strand Solutions";
 
   const linkedInUrl = `${linkedInBase}` +
     `&name=${encodeURIComponent(certName)}` +
