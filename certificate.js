@@ -14,10 +14,9 @@ function generateCertificate() {
     const expirationYear = (parseInt(year) + 1).toString();
     const random = Math.floor(Math.random() * 90000 + 10000);
     const certId = `3SAI-${year}-${month}-${random}`;
-    const studentNameSlug = name.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "");
     const selectedType = classTypeSelect.value;
     const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
-    // Credential URL
+    // Credential URL (use certId for uniqueness)
     const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
     // Update certificate preview
     document.getElementById("certNameHeader").textContent = name;
@@ -26,11 +25,14 @@ function generateCertificate() {
     document.getElementById("certClassType").textContent = classType;
     document.getElementById("certDate").textContent = formattedDate;
     document.getElementById("certId").textContent = certId;
-    document.title = certId; // Sets browser window title for PDF file name
-    document.getElementById("certLink").href = certUrl;
-    document.getElementById("certLink").textContent = certUrl;
-    (_a = document.getElementById("certificateOutput")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-    // LinkedIn Link
+    document.title = certId; // Sets suggested PDF filename
+    // Credential URL link display
+    const certLink = document.getElementById("certLink");
+    certLink.href = certUrl;
+    certLink.textContent = certUrl;
+    const credentialContainer = document.getElementById("credentialLinkContainer");
+    credentialContainer.style.display = "block";
+    // LinkedIn Link generation
     const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
     const certName = `${course} ${classType}`;
     const issuer = "3Strand.ai";
@@ -47,12 +49,9 @@ function generateCertificate() {
     linkedInAnchor.href = linkedInUrl;
     linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
     linkedInAnchor.style.display = "block";
-    // Display credential link as well
-    const credentialContainer = document.getElementById("credentialLinkContainer");
-    credentialContainer.style.display = "block";
-    // Show status message
+    (_a = document.getElementById("certificateOutput")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
+    // Show update status message
     const statusMessage = document.getElementById("sheetStatus");
-    // Send data to Google Sheet
     const payload = {
         name,
         course,
