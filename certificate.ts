@@ -20,7 +20,7 @@ function generateCertificate(): void {
   const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
 
   // Credential URL
-  const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${studentNameSlug}.pdf`;
+  const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
 
   // Update certificate preview
   (document.getElementById("certNameHeader") as HTMLElement).textContent = name;
@@ -29,6 +29,7 @@ function generateCertificate(): void {
   (document.getElementById("certClassType") as HTMLElement).textContent = classType;
   (document.getElementById("certDate") as HTMLElement).textContent = formattedDate;
   (document.getElementById("certId") as HTMLElement).textContent = certId;
+  	document.title = certId; // Sets browser window title for PDF file name
   (document.getElementById("certLink") as HTMLAnchorElement).href = certUrl;
   (document.getElementById("certLink") as HTMLAnchorElement).textContent = certUrl;
 
