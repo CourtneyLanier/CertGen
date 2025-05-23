@@ -70,20 +70,21 @@ function generateCertificate(): void {
     date: formattedDate,
     certId,
     certUrl,
-    linkedInUrl
+    linkedInUrl,
+    savePdf: true
   };
 
   const query = new URLSearchParams({ payload: JSON.stringify(payload) });
 
-  fetch(`https://script.google.com/macros/s/AKfycbzsLbP6UEsdg-caGEM-HlLzeSbY9629Rk2SFGT7CV3IGLXam1Z3bdsgqVgCdVuvQjQwOA/exec?${query.toString()}`)
+  fetch(`https://script.google.com/macros/s/AKfycbxFYcRdAl3ClIuygINRjxm2qzhbc4DufeXkKao9Tbsc2KhzhyTSkvCOuRjhAjRniHgZkg/exec?${query.toString()}`)
     .then(res => res.text())
     .then(response => {
       if (response.toLowerCase().includes("success")) {
         statusMessage.textContent = "✅ Student info successfully saved to Google Sheet.";
         statusMessage.style.color = "green";
       } else {
-        statusMessage.textContent = "⚠️ Could not save to Google Sheet.";
-        statusMessage.style.color = "red";
+        statusMessage.textContent = response; // Show raw response if not "success"
+        statusMessage.style.color = "orange";
       }
       statusMessage.style.display = "block";
     })
