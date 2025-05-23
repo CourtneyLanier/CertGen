@@ -36,6 +36,10 @@ function generateCertificate() {
         `&certificationId=${encodeURIComponent(certId)}` +
         `&certificationUrl=${encodeURIComponent(certUrl)}`;
     console.log("LinkedIn link:", linkedInUrl);
+    const linkedInAnchor = document.getElementById("linkedInLink");
+    linkedInAnchor.href = linkedInUrl;
+    linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
+    linkedInAnchor.style.display = "block";
 }
 function printCertificate() {
     console.log("Print button clicked!");
