@@ -58,28 +58,27 @@ function generateCertificate() {
         certUrl,
         linkedInUrl
     };
-    const formData = new FormData();
-    formData.append("payload", JSON.stringify(payload));
-    fetch("https://script.google.com/macros/s/AKfycbxA4yBu-pcN3HzL3B4eOe0Rbp_iYorBFaE5jmhEl_vxY3rA0c_ICqe2H5gMSxEVmPKmPg/exec", {
-        method: "POST",
-        body: formData
-    })
+    const query = new URLSearchParams({ payload: JSON.stringify(payload) });
+    fetch(`https://script.google.com/macros/s/AKfycbzwwL947CajFOokHQPPbiFgdPJY6LPV_IANeUHtiydjest3-crNR-QJ3hhq06NSmlwcRw/exec?${query.toString()}`)
         .then(res => res.text())
-        .then(text => {
-        if (text.toLowerCase().includes("success")) {
+        .then(response => {
+        const statusMessage = document.getElementById("sheetStatus");
+        if (response.toLowerCase().includes("success")) {
             statusMessage.textContent = "✅ Student info successfully saved to Google Sheet.";
             statusMessage.style.color = "green";
         }
         else {
-            throw new Error("Google Sheet update failed: " + text);
+            statusMessage.textContent = "⚠️ Could not save to Google Sheet.";
+            statusMessage.style.color = "red";
         }
         statusMessage.style.display = "block";
     })
         .catch(err => {
-        console.error("Sheet update failed", err);
-        statusMessage.textContent = "⚠️ Could not save to Google Sheet.";
+        const statusMessage = document.getElementById("sheetStatus");
+        statusMessage.textContent = "❌ Failed to reach the Google Sheet.";
         statusMessage.style.color = "red";
         statusMessage.style.display = "block";
+        console.error(err);
     });
 }
 function printCertificate() {
