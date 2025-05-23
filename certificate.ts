@@ -14,12 +14,11 @@ function generateCertificate(): void {
   const expirationYear = (parseInt(year) + 1).toString();
   const random = Math.floor(Math.random() * 90000 + 10000);
   const certId = `3SAI-${year}-${month}-${random}`;
-  const studentNameSlug = name.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "");
 
   const selectedType = classTypeSelect.value;
   const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
 
-  // Credential URL
+  // Credential URL (use certId for uniqueness)
   const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
 
   // Update certificate preview
@@ -29,13 +28,17 @@ function generateCertificate(): void {
   (document.getElementById("certClassType") as HTMLElement).textContent = classType;
   (document.getElementById("certDate") as HTMLElement).textContent = formattedDate;
   (document.getElementById("certId") as HTMLElement).textContent = certId;
-  	document.title = certId; // Sets browser window title for PDF file name
-  (document.getElementById("certLink") as HTMLAnchorElement).href = certUrl;
-  (document.getElementById("certLink") as HTMLAnchorElement).textContent = certUrl;
+  document.title = certId; // Sets suggested PDF filename
 
-  document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
+  // Credential URL link display
+  const certLink = document.getElementById("certLink") as HTMLAnchorElement;
+  certLink.href = certUrl;
+  certLink.textContent = certUrl;
 
-  // LinkedIn Link
+  const credentialContainer = document.getElementById("credentialLinkContainer") as HTMLElement;
+  credentialContainer.style.display = "block";
+
+  // LinkedIn Link generation
   const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
   const certName = `${course} ${classType}`;
   const issuer = "3Strand.ai";
@@ -55,14 +58,11 @@ function generateCertificate(): void {
   linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
   linkedInAnchor.style.display = "block";
 
-  // Display credential link as well
-  const credentialContainer = document.getElementById("credentialLinkContainer") as HTMLElement;
-  credentialContainer.style.display = "block";
+  document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
 
-  // Show status message
+  // Show update status message
   const statusMessage = document.getElementById("sheetStatus") as HTMLElement;
 
-  // Send data to Google Sheet
   const payload = {
     name,
     course,
@@ -119,4 +119,3 @@ function setupEventListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", setupEventListeners);
-

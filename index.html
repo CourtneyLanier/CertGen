@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3Strand.ai CertGen</title>
-  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="styles.css?v=9">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#003366">
   <link rel="icon" href="icon-192.png" type="image/png">
@@ -30,7 +29,6 @@
           <option value="Other">Other</option>
         </select>
       </label>
-
       <div id="customTypeWrapper" style="display:none;">
         <label for="customClassType">Please specify:
           <input type="text" id="customClassType" />
@@ -68,12 +66,24 @@
     </div>
 
     <button id="printBtn" class="no-print">Print Certificate</button>
-    <p><a id="linkedInLink" href="#" target="_blank" class="no-print" style="display:none;">Click here to add your certificate to LinkedIn</a></p>
-	<p id="sheetStatus" class="no-print" style="display:none; font-style: italic; color: green;"></p>
-	<p id="sheetStatus" class="no-print" style="display:none; font-style: italic; color: green;"></p>
 
+    <div id="credentialLinkContainer" class="no-print" style="display:none;">
+      <p>
+        Credential URL:
+        <a id="certLink" href="#" target="_blank"></a>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('certLink').href)">Copy</button>
+      </p>
+    </div>
+
+    <p class="no-print" style="display:none;" id="linkedInWrapper">
+      <a id="linkedInLink" href="#" target="_blank"></a>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('linkedInLink').href)">Copy</button>
+    </p>
+
+    <p id="sheetStatus" class="no-print" style="display:none; font-style: italic;"></p>
   </div>
 
-  <script src="certificate.js?v=1.0.5"></script>
+  <script src="certificate.js?v=1.0.3"></script>
 </body>
 </html>
+
