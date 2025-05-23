@@ -75,7 +75,7 @@ function generateCertificate(): void {
 
   const query = new URLSearchParams({ payload: JSON.stringify(payload) });
 
-  fetch(`https://script.google.com/macros/s/AKfycbw7N6911df3waLyvjewatplsUIBa_lFvdLm7PdUUE253XjKQPirmkCaLqt7Oe01yA1pjg/exec?${query.toString()}`)
+  fetch(`https://script.google.com/macros/s/AKfycbzsLbP6UEsdg-caGEM-HlLzeSbY9629Rk2SFGT7CV3IGLXam1Z3bdsgqVgCdVuvQjQwOA/exec?${query.toString()}`)
     .then(res => res.text())
     .then(response => {
       if (response.toLowerCase().includes("success")) {
