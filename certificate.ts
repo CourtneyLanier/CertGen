@@ -46,8 +46,8 @@ function generateCertificate(): void {
     `&issueMonth=${encodeURIComponent(month)}` +
     `&expirationYear=${encodeURIComponent(expirationYear)}` +
     `&expirationMonth=${encodeURIComponent(month)}` +
-    `&certificationId=${encodeURIComponent(certId)}` +
-    `&certificationUrl=${encodeURIComponent(certUrl)}`;
+    `&credentialId=${encodeURIComponent(certId)}` +
+    `&credentialUrl=${encodeURIComponent(certUrl)}`;
 
   const linkedInAnchor = document.getElementById("linkedInLink") as HTMLAnchorElement;
   linkedInAnchor.href = linkedInUrl;

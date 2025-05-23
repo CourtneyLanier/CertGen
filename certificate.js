@@ -39,8 +39,8 @@ function generateCertificate() {
         `&issueMonth=${encodeURIComponent(month)}` +
         `&expirationYear=${encodeURIComponent(expirationYear)}` +
         `&expirationMonth=${encodeURIComponent(month)}` +
-        `&certificationId=${encodeURIComponent(certId)}` +
-        `&certificationUrl=${encodeURIComponent(certUrl)}`;
+        `&credentialId=${encodeURIComponent(certId)}` +
+        `&credentialUrl=${encodeURIComponent(certUrl)}`;
     const linkedInAnchor = document.getElementById("linkedInLink");
     linkedInAnchor.href = linkedInUrl;
     linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
