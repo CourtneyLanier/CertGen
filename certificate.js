@@ -16,23 +16,19 @@ function generateCertificate() {
     const certId = `3SAI-${year}-${month}-${random}`;
     const selectedType = classTypeSelect.value;
     const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
-    // Credential URL (use certId for uniqueness)
     const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
-    // Update certificate preview
     document.getElementById("certNameHeader").textContent = name;
     document.getElementById("certNameBody").textContent = name;
     document.getElementById("certCourse").textContent = course;
     document.getElementById("certClassType").textContent = classType;
     document.getElementById("certDate").textContent = formattedDate;
     document.getElementById("certId").textContent = certId;
-    document.title = certId; // Sets suggested PDF filename
-    // Credential URL link display
+    document.title = certId;
     const certLink = document.getElementById("certLink");
     certLink.href = certUrl;
     certLink.textContent = certUrl;
     const credentialContainer = document.getElementById("credentialLinkContainer");
     credentialContainer.style.display = "block";
-    // LinkedIn Link generation
     const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
     const certName = `${course} ${classType}`;
     const issuer = "3Strand.ai";
@@ -49,8 +45,9 @@ function generateCertificate() {
     linkedInAnchor.href = linkedInUrl;
     linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
     linkedInAnchor.style.display = "block";
+    const linkedInWrapper = document.getElementById("linkedInWrapper");
+    linkedInWrapper.style.display = "block";
     (_a = document.getElementById("certificateOutput")) === null || _a === void 0 ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
-    // Show update status message
     const statusMessage = document.getElementById("sheetStatus");
     const payload = {
         name,
@@ -61,20 +58,22 @@ function generateCertificate() {
         certUrl,
         linkedInUrl
     };
-    fetch("https://script.google.com/macros/s/AKfycbxL9Nt4Sr2ZPYRsJyRz4w9YNZz08JsBKqX1yt8XTMncivRHkcBTZgwQCICkSv2W4V2f1A/exec", {
+    const formData = new FormData();
+    formData.append("payload", JSON.stringify(payload));
+    fetch("https://script.google.com/macros/s/AKfycbxA4yBu-pcN3HzL3B4eOe0Rbp_iYorBFaE5jmhEl_vxY3rA0c_ICqe2H5gMSxEVmPKmPg/exec", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: formData
     })
-        .then(res => {
-        if (res.ok) {
+        .then(res => res.text())
+        .then(text => {
+        if (text.toLowerCase().includes("success")) {
             statusMessage.textContent = "✅ Student info successfully saved to Google Sheet.";
             statusMessage.style.color = "green";
-            statusMessage.style.display = "block";
         }
         else {
-            throw new Error("Google Sheet update failed.");
+            throw new Error("Google Sheet update failed: " + text);
         }
+        statusMessage.style.display = "block";
     })
         .catch(err => {
         console.error("Sheet update failed", err);
