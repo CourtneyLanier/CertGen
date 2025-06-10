@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3Strand.ai CertGen</title>
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#003366">
   <link rel="icon" href="icon-192.png" type="image/png">
@@ -50,9 +50,9 @@
     </p>
     <p class="body-text">
       has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 
-	</p>
-	<p class="body-text">	
-	 <strong>3 Strand Solutions</strong>, powered by <strong>3Strand.ai</strong>.
+    </p>
+    <p class="body-text">	
+      <strong>3 Strand Solutions</strong>, powered by <strong>3Strand.ai</strong>.
     </p>
     <p class="body-text">Date: <span id="certDate">[Date]</span></p>
     <p class="cert-id">Certificate ID: <span id="certId">3SAI-YYYY-MM-XXXXX</span></p>
@@ -83,10 +83,18 @@
       <button onclick="navigator.clipboard.writeText(document.getElementById('linkedInLink').href)">Copy</button>
     </p>
 
-    <p id="sheetStatus" class="no-print" style="display:none; font-style: italic;"></p>
+    <!-- New Buttons for Google Sheet & Folder -->
+    <div class="no-print" style="margin-top: 2rem; text-align: center;">
+      <a href="https://docs.google.com/spreadsheets/d/1Qt1GTp-8UrOOJ63uPxDASkVUjbAVpbpyDal5jJ46Nv8/edit?usp=sharing" target="_blank">
+        <button>📊 View Google Sheet</button>
+      </a>
+      <a href="https://drive.google.com/drive/folders/1w2PJfgr0h7zc0C7Ax-Goc8oj83TvranA?usp=drive_link" target="_blank">
+        <button>📁 Open Certificate Folder</button>
+      </a>
+    </div>
+
   </div>
 
-  <script src="certificate.js?v=1.0.11"></script>
+  <script src="certificate.js?v=1.0.12"></script>
 </body>
 </html>
-
