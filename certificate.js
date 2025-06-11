@@ -76,7 +76,7 @@ function generateCertificate() {
         savePdf: true // ← Add this line
     };
     const query = new URLSearchParams({ payload: JSON.stringify(payload) });
-    fetch(`https://script.google.com/macros/s/AKfycbw7N6911df3waLyvjewatplsUIBa_lFvdLm7PdUUE253XjKQPirmkCaLqt7Oe01yA1pjg/exec?${query}`)
+    fetch(`https://script.google.com/macros/s/AKfycbzNscEUEzalVBEPwMw3jHwHeozlEgXt_wrArRsJ74pKRopyLUauDeAS3JuH42sgeIW4DQ/exec?${query}`)
         .then(res => res.text())
         .then(response => console.log("Sheet response:", response))
         .catch(err => console.error("Sheet update failed:", err));
