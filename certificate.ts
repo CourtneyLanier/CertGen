@@ -73,7 +73,7 @@ function generateCertificate(): void {
   if (linkedInLinkBtn) linkedInLinkBtn.href = linkedInUrl;
 
   // 7. Fire off sheet update in background (no on-screen messaging)
-  const payload = { name, course, classType, date: formattedDate, certId, certUrl, linkedInUrl };
+  const payload = { name, course, classType, date: formattedDate, certId, certUrl, linkedInUrl, savePdf: true };
   const query = new URLSearchParams({ payload: JSON.stringify(payload) });
 
   fetch(`https://script.google.com/macros/s/AKfycbw7N6911df3waLyvjewatplsUIBa_lFvdLm7PdUUE253XjKQPirmkCaLqt7Oe01yA1pjg/exec?${query}`)
