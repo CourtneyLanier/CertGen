@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3Strand.ai CertGen</title>
-  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="styles.css?v=11">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#003366">
   <link rel="icon" href="icon-192.png" type="image/png">
@@ -51,7 +51,7 @@
     <p class="body-text">
       has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 
     </p>
-    <p class="body-text">	
+    <p class="body-text">  
       <strong>3 Strand Solutions</strong>, powered by <strong>3Strand.ai</strong>.
     </p>
     <p class="body-text">Date: <span id="certDate">[Date]</span></p>
@@ -68,36 +68,33 @@
       </div>
     </div>
 
-    <button id="printBtn" class="no-print">Print Certificate</button>
-
-    <!-- New Buttons for Google Sheet & Folder -->
+    <!-- Bottom Buttons -->
     <div class="no-print" style="margin-top: 2rem; text-align: center;">
-      <a href="https://docs.google.com/spreadsheets/d/1Qt1GTp-8UrOOJ63uPxDASkVUjbAVpbpyDal5jJ46Nv8/edit?usp=sharing" target="_blank">
-        <button>📊 View Google Sheet</button>
+      <!-- Print -->
+      <button id="printBtn">🖨️ Print Certificate</button>
+      <!-- Google Sheet -->
+      <a href="https://docs.google.com/spreadsheets/d/1Qt1GTp-8UrOOJ63uPxDASkVUjbAVpbpyDal5jJ46Nv8/edit?usp=drive_link" target="_blank">
+        <button type="button">📊 View Google Sheet</button>
       </a>
+      <!-- Certificate Folder -->
       <a href="https://drive.google.com/drive/folders/1w2PJfgr0h7zc0C7Ax-Goc8oj83TvranA?usp=drive_link" target="_blank">
-        <button>📁 Open Certificate Folder</button>
+        <button type="button">📁 Open Certificate Folder</button>
       </a>
+      <!-- Certificate URL -->
+      <a id="certLinkBtn" href="#" target="_blank">
+        <button type="button">🔗 View Certificate</button>
+      </a>
+      <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('certLinkBtn').href)">
+        📋 Copy Certificate URL
+      </button>
+      <!-- LinkedIn URL -->
+      <a id="linkedInLinkBtn" href="#" target="_blank">
+        <button type="button">🔗 Add to LinkedIn</button>
+      </a>
+      <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('linkedInLinkBtn').href)">
+        📋 Copy LinkedIn URL
+      </button>
     </div>
-	<!-- Clean Credential + LinkedIn Buttons (inline, tidy) -->
-	<div class="no-print bottom-buttons">
-	  <a id="certLinkBtn" href="#" target="_blank">
-		<button type="button">View Certificate</button>
-	  </a>
-
-	  <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('certLinkBtn').href)">
-		Copy Certificate URL
-	  </button>
-
-	  <a id="linkedInLinkBtn" href="#" target="_blank">
-		<button type="button">Add to LinkedIn</button>
-	  </a>
-
-	  <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('linkedInLinkBtn').href)">
-		Copy LinkedIn URL
-	  </button>
-	</div>
-
   </div>
 
   <script src="certificate.js?v=1.0.12"></script>
