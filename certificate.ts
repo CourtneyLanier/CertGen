@@ -1,45 +1,33 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxq-iy_gnYUnBo0JGVnXLVqEip8dR9F8L9yIu9_1eRMRyldWnPzHCOfRA5LgchLyLFkwQ";
-
 function generateCertificate(): void {
-  // 1. Read inputs
-  const name = (document.getElementById("studentName") as HTMLInputElement).value;
-  const course = (document.getElementById("courseName") as HTMLInputElement).value;
-  const dateStr = (document.getElementById("courseDate") as HTMLInputElement).value;
+  // 1. Read form inputs
+  const nameInput = document.getElementById("studentName") as HTMLInputElement;
+  const courseInput = document.getElementById("courseName") as HTMLInputElement;
+  const dateInput = document.getElementById("courseDate") as HTMLInputElement;
   const classTypeSelect = document.getElementById("classType") as HTMLSelectElement;
   const customClassTypeInput = document.getElementById("customClassType") as HTMLInputElement;
 
-  // 2. Compute values
-  const [year, month, day] = dateStr.split("-");
-  const formattedDate = `${month}/${day}/${year}`;
-  const expirationYear = (parseInt(year) + 1).toString();
+  const name = nameInput.value;
+  const course = courseInput.value;
+  const dateStr = dateInput.value;
+
+  // 2. Generate derived values
+  const [year, month] = dateStr.split("-");
+  const formattedDate = `${month}/${dateStr.split("-")[2]}/${year}`;
+  const expirationYear = (parseInt(year, 10) + 1).toString();
   const random = Math.floor(Math.random() * 90000 + 10000);
   const certId = `3SAI-${year}-${month}-${random}`;
 
   const selectedType = classTypeSelect.value;
   const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
 
+  // 3. Build certificate URL and LinkedIn URL
   const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
-
-  // 3. Update preview text
-  (document.getElementById("certNameHeader") as HTMLElement).textContent = name;
-  (document.getElementById("certNameBody") as HTMLElement).textContent = name;
-  (document.getElementById("certCourse") as HTMLElement).textContent = course;
-  (document.getElementById("certClassType") as HTMLElement).textContent = classType;
-  (document.getElementById("certDate") as HTMLElement).textContent = formattedDate;
-  (document.getElementById("certId") as HTMLElement).textContent = certId;
-  document.title = certId; // for Print → Save as PDF filename
-
-  // 4. Update inline buttons
-  const certLinkBtn = document.getElementById("certLinkBtn") as HTMLAnchorElement;
-  certLinkBtn.href = certUrl;
-  certLinkBtn.style.display = "inline-block";
 
   const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
   const certName = `${course} ${classType}`;
   const issuer = "3 Strand Solutions";
 
-  const linkedInUrl =
-    `${linkedInBase}` +
+  const linkedInUrl = `${linkedInBase}` +
     `&name=${encodeURIComponent(certName)}` +
     `&organizationName=${encodeURIComponent(issuer)}` +
     `&issueYear=${encodeURIComponent(year)}` +
@@ -49,59 +37,60 @@ function generateCertificate(): void {
     `&certificationId=${encodeURIComponent(certId)}` +
     `&certificationUrl=${encodeURIComponent(certUrl)}`;
 
-  const linkedInLinkBtn = document.getElementById("linkedInLinkBtn") as HTMLAnchorElement;
-  linkedInLinkBtn.href = linkedInUrl;
-  linkedInLinkBtn.style.display = "inline-block";
+  // 4. Update on‐page certificate preview, with null‐checks
+  const headerEl = document.getElementById("certNameHeader");
+  if (headerEl) headerEl.textContent = name;
 
-  // 5. Scroll to certificate preview
-  document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
+  const bodyNameEl = document.getElementById("certNameBody");
+  if (bodyNameEl) bodyNameEl.textContent = name;
 
-  // 6. Prepare payload for Google Sheet + PDF
-  const payload = {
-    name,
-    course,
-    classType,
-    date: formattedDate,
-    certId,
-    certUrl,
-    linkedInUrl,
-    savePdf: true
-  };
+  const courseEl = document.getElementById("certCourse");
+  if (courseEl) courseEl.textContent = course;
 
+  const typeEl = document.getElementById("certClassType");
+  if (typeEl) typeEl.textContent = classType;
+
+  const dateEl = document.getElementById("certDate");
+  if (dateEl) dateEl.textContent = formattedDate;
+
+  const idEl = document.getElementById("certId");
+  if (idEl) idEl.textContent = certId;
+
+  // Set the window title for PDF filename
+  document.title = certId;
+
+  // 6. Scroll to preview
+  const previewEl = document.getElementById("certificateOutput");
+  if (previewEl) {
+    previewEl.scrollIntoView({ behavior: "smooth" });
+  }
+
+  // 5. Update bottom-buttons links if they exist
+  const certLinkBtn = document.getElementById("certLinkBtn") as HTMLAnchorElement | null;
+  if (certLinkBtn) certLinkBtn.href = certUrl;
+
+  const linkedInLinkBtn = document.getElementById("linkedInLinkBtn") as HTMLAnchorElement | null;
+  if (linkedInLinkBtn) linkedInLinkBtn.href = linkedInUrl;
+
+  // 7. Fire off sheet update in background (no on-screen messaging)
+  const payload = { name, course, classType, date: formattedDate, certId, certUrl, linkedInUrl };
   const query = new URLSearchParams({ payload: JSON.stringify(payload) });
 
-  // 7. Send to Google Apps Script
-  const statusMessage = document.getElementById("sheetStatus") as HTMLElement;
-  fetch(`${SCRIPT_URL}/exec?${query.toString()}`)
+  fetch(`https://script.google.com/macros/s/AKfycbw7N6911df3waLyvjewatplsUIBa_lFvdLm7PdUUE253XjKQPirmkCaLqt7Oe01yA1pjg/exec?${query}`)
     .then(res => res.text())
-    .then(response => {
-      if (response.toLowerCase().includes("success")) {
-        statusMessage.textContent = "✅ Student info successfully saved to Google Sheet.";
-        statusMessage.style.color = "green";
-      } else {
-        statusMessage.textContent = response;
-        statusMessage.style.color = "orange";
-      }
-      statusMessage.style.display = "block";
-    })
-    .catch(err => {
-      console.error("Sheet update failed", err);
-      statusMessage.textContent = "❌ Failed to reach the Google Sheet.";
-      statusMessage.style.color = "red";
-      statusMessage.style.display = "block";
-    });
+    .then(response => console.log("Sheet response:", response))
+    .catch(err => console.error("Sheet update failed:", err));
 }
 
-function printCertificate() {
-  console.log("Print button clicked!");
+function printCertificate(): void {
   window.print();
 }
 
-function setupEventListeners() {
+function setupEventListeners(): void {
   const form = document.getElementById("certificateForm");
   const printBtn = document.getElementById("printBtn");
-  const classTypeSelect = document.getElementById("classType") as HTMLSelectElement;
-  const customTypeWrapper = document.getElementById("customTypeWrapper") as HTMLElement;
+  const classTypeSelect = document.getElementById("classType") as HTMLSelectElement | null;
+  const customTypeWrapper = document.getElementById("customTypeWrapper") as HTMLElement | null;
 
   form?.addEventListener("submit", e => {
     e.preventDefault();
@@ -111,8 +100,9 @@ function setupEventListeners() {
   printBtn?.addEventListener("click", printCertificate);
 
   classTypeSelect?.addEventListener("change", () => {
-    customTypeWrapper.style.display =
-      classTypeSelect.value === "Other" ? "block" : "none";
+    if (customTypeWrapper) {
+      customTypeWrapper.style.display = classTypeSelect.value === "Other" ? "block" : "none";
+    }
   });
 }
 
