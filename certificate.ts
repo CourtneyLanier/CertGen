@@ -1,14 +1,14 @@
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxq-iy_gnYUnBo0JGVnXLVqEip8dR9F8L9yIu9_1eRMRyldWnPzHCOfRA5LgchLyLFkwQ";
+
 function generateCertificate(): void {
-  const nameInput = document.getElementById("studentName") as HTMLInputElement;
-  const courseInput = document.getElementById("courseName") as HTMLInputElement;
-  const dateInput = document.getElementById("courseDate") as HTMLInputElement;
+  // 1. Read inputs
+  const name = (document.getElementById("studentName") as HTMLInputElement).value;
+  const course = (document.getElementById("courseName") as HTMLInputElement).value;
+  const dateStr = (document.getElementById("courseDate") as HTMLInputElement).value;
   const classTypeSelect = document.getElementById("classType") as HTMLSelectElement;
   const customClassTypeInput = document.getElementById("customClassType") as HTMLInputElement;
 
-  const name = nameInput.value;
-  const course = courseInput.value;
-  const dateStr = dateInput.value;
-
+  // 2. Compute values
   const [year, month, day] = dateStr.split("-");
   const formattedDate = `${month}/${day}/${year}`;
   const expirationYear = (parseInt(year) + 1).toString();
@@ -20,26 +20,26 @@ function generateCertificate(): void {
 
   const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
 
+  // 3. Update preview text
   (document.getElementById("certNameHeader") as HTMLElement).textContent = name;
   (document.getElementById("certNameBody") as HTMLElement).textContent = name;
   (document.getElementById("certCourse") as HTMLElement).textContent = course;
   (document.getElementById("certClassType") as HTMLElement).textContent = classType;
   (document.getElementById("certDate") as HTMLElement).textContent = formattedDate;
   (document.getElementById("certId") as HTMLElement).textContent = certId;
-  document.title = certId;
+  document.title = certId; // for Print → Save as PDF filename
 
-  const certLink = document.getElementById("certLink") as HTMLAnchorElement;
-  certLink.href = certUrl;
-  certLink.textContent = certUrl;
-
-  const credentialContainer = document.getElementById("credentialLinkContainer") as HTMLElement;
-  credentialContainer.style.display = "block";
+  // 4. Update inline buttons
+  const certLinkBtn = document.getElementById("certLinkBtn") as HTMLAnchorElement;
+  certLinkBtn.href = certUrl;
+  certLinkBtn.style.display = "inline-block";
 
   const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
   const certName = `${course} ${classType}`;
   const issuer = "3 Strand Solutions";
 
-  const linkedInUrl = `${linkedInBase}` +
+  const linkedInUrl =
+    `${linkedInBase}` +
     `&name=${encodeURIComponent(certName)}` +
     `&organizationName=${encodeURIComponent(issuer)}` +
     `&issueYear=${encodeURIComponent(year)}` +
@@ -49,20 +49,14 @@ function generateCertificate(): void {
     `&certificationId=${encodeURIComponent(certId)}` +
     `&certificationUrl=${encodeURIComponent(certUrl)}`;
 
-  console.log("LinkedIn URL:", linkedInUrl);
+  const linkedInLinkBtn = document.getElementById("linkedInLinkBtn") as HTMLAnchorElement;
+  linkedInLinkBtn.href = linkedInUrl;
+  linkedInLinkBtn.style.display = "inline-block";
 
-  const linkedInAnchor = document.getElementById("linkedInLink") as HTMLAnchorElement;
-  linkedInAnchor.href = linkedInUrl;
-  linkedInAnchor.textContent = "Click here to add your certificate to LinkedIn";
-  linkedInAnchor.style.display = "block";
-
-  const linkedInWrapper = document.getElementById("linkedInWrapper") as HTMLElement;
-  linkedInWrapper.style.display = "block";
-
+  // 5. Scroll to certificate preview
   document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
 
-  const statusMessage = document.getElementById("sheetStatus") as HTMLElement;
-
+  // 6. Prepare payload for Google Sheet + PDF
   const payload = {
     name,
     course,
@@ -76,14 +70,16 @@ function generateCertificate(): void {
 
   const query = new URLSearchParams({ payload: JSON.stringify(payload) });
 
-  fetch(`https://script.google.com/macros/s/AKfycbxq-iy_gnYUnBo0JGVnXLVqEip8dR9F8L9yIu9_1eRMRyldWnPzHCOfRA5LgchLyLFkwQ/exec?${query.toString()}`)
+  // 7. Send to Google Apps Script
+  const statusMessage = document.getElementById("sheetStatus") as HTMLElement;
+  fetch(`${SCRIPT_URL}/exec?${query.toString()}`)
     .then(res => res.text())
     .then(response => {
       if (response.toLowerCase().includes("success")) {
         statusMessage.textContent = "✅ Student info successfully saved to Google Sheet.";
         statusMessage.style.color = "green";
       } else {
-        statusMessage.textContent = response; // Show raw response if not "success"
+        statusMessage.textContent = response;
         statusMessage.style.color = "orange";
       }
       statusMessage.style.display = "block";
@@ -107,7 +103,7 @@ function setupEventListeners() {
   const classTypeSelect = document.getElementById("classType") as HTMLSelectElement;
   const customTypeWrapper = document.getElementById("customTypeWrapper") as HTMLElement;
 
-  form?.addEventListener("submit", function (e) {
+  form?.addEventListener("submit", e => {
     e.preventDefault();
     generateCertificate();
   });
@@ -115,7 +111,8 @@ function setupEventListeners() {
   printBtn?.addEventListener("click", printCertificate);
 
   classTypeSelect?.addEventListener("change", () => {
-    customTypeWrapper.style.display = (classTypeSelect.value === "Other") ? "block" : "none";
+    customTypeWrapper.style.display =
+      classTypeSelect.value === "Other" ? "block" : "none";
   });
 }
 

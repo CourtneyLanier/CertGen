@@ -79,6 +79,24 @@
         <button>📁 Open Certificate Folder</button>
       </a>
     </div>
+	<!-- Clean Credential + LinkedIn Buttons (inline, tidy) -->
+	<div class="no-print bottom-buttons">
+	  <a id="certLinkBtn" href="#" target="_blank">
+		<button type="button">View Certificate</button>
+	  </a>
+
+	  <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('certLinkBtn').href)">
+		Copy Certificate URL
+	  </button>
+
+	  <a id="linkedInLinkBtn" href="#" target="_blank">
+		<button type="button">Add to LinkedIn</button>
+	  </a>
+
+	  <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('linkedInLinkBtn').href)">
+		Copy LinkedIn URL
+	  </button>
+	</div>
 
   </div>
 
