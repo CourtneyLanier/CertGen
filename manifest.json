@@ -1,20 +1,24 @@
 {
-  "name": "CertGen - Certificate Generator",
+  "name": "3Strand.ai Certificate Generator",
   "short_name": "CertGen",
+  "description": "Generate and print 3Strand.ai certificates & badges",
   "start_url": "./index.html",
   "display": "standalone",
+  "orientation": "landscape",
   "background_color": "#ffffff",
   "theme_color": "#003366",
   "icons": [
     {
       "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
