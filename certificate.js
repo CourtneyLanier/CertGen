@@ -120,7 +120,7 @@ function generateBadge() {
     const expYear = exp.getFullYear().toString();
     const expMonth = ("0" + (exp.getMonth() + 1)).slice(-2);
     const random = Math.floor(Math.random() * 90000 + 10000);
-    const badgeId = `BADGE-${year}-${expMonth}-${random}`;
+    const badgeId = `3SAIB-${year}-${expMonth}-${random}`;
     // 4.3) URLs + deep-link
     const badgeUrl = `https://courtneylanier.github.io/CertGen/badges/${encodeURIComponent(badgeFile)}`;
     const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
