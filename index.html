@@ -2,95 +2,137 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>3Strand.ai CertGen</title>
-  <link rel="stylesheet" href="styles.css?v=11">
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#003366">
-  <link rel="icon" href="icon-192.png" type="image/png">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
-  <div class="form-container">
-    <h2>Generate Certificate</h2>
-    <form id="certificateForm">
-      <label for="studentName">Student's Name:
-        <input type="text" id="studentName" name="studentName" required />
-      </label>
-      <label for="courseName">Course Completed:
-        <input type="text" id="courseName" name="courseName" required />
-      </label>
-      <label for="classType">Class Type:
-        <select id="classType" name="classType" required>
-          <option value="Training">Training</option>
-          <option value="Course">Course</option>
-          <option value="Class">Class</option>
-          <option value="Workshop">Workshop</option>
-          <option value="AI-Powered Workshop">AI-Powered Workshop</option>
-          <option value="Other">Other</option>
-        </select>
-      </label>
-      <div id="customTypeWrapper" style="display:none;">
-        <label for="customClassType">Please specify:
-          <input type="text" id="customClassType" />
+
+  <!-- TAB NAVIGATION -->
+  <nav class="tab-nav">
+    <button id="tabCertificates" class="active">Certificates</button>
+    <button id="tabBadges">Badges</button>
+  </nav>
+
+  <!-- CERTIFICATES TAB -->
+  <section id="certificatesTab" class="tab-content">
+    <div class="form-container">
+      <h2>Generate Certificate</h2>
+      <form id="certificateForm">
+        <label for="studentName">Student's Name:
+          <input type="text" id="studentName" name="studentName" required />
         </label>
-      </div>
-      <label for="courseDate">Date:
-        <input type="date" id="courseDate" name="courseDate" required />
-      </label>
-      <button type="submit">Generate</button>
-    </form>
-  </div>
-
-  <div class="certificate" id="certificateOutput">
-    <p class="student-name"><span id="certNameHeader">[Student Name]</span></p>
-    <img src="logo.png" class="logo" alt="3Strand.ai Logo" />
-    <h1 class="title">Certificate of Completion</h1>
-    <p class="body-text">
-      This certificate certifies that <strong><span id="certNameBody">[Student Name]</span></strong>
-    </p>
-    <p class="body-text">
-      has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 
-    </p>
-    <p class="body-text">  
-      <strong>3 Strand Solutions</strong>, powered by <strong>3Strand.ai</strong>.
-    </p>
-    <p class="body-text">Date: <span id="certDate">[Date]</span></p>
-    <p class="cert-id">Certificate ID: <span id="certId">3SAI-YYYY-MM-XXXXX</span></p>
-
-    <div class="signatures">
-      <div>
-        <img src="Signature_Greg.jpg" class="signature-img" alt="Greg Dawson Signature" />
-        <p><strong>Greg Dawson</strong><br>Founder</p>
-      </div>
-      <div>
-        <img src="Signature_Bailey.jpg" class="signature-img" alt="Bailey Dawson Signature" />
-        <p><strong>Bailey Dawson</strong><br>Facilitator</p>
-      </div>
+        <label for="courseName">Course Completed:
+          <input type="text" id="courseName" name="courseName" required />
+        </label>
+        <label for="classType">Class Type:
+          <select id="classType" name="classType" required>
+            <option value="Training">Training</option>
+            <option value="Course">Course</option>
+            <option value="Class">Class</option>
+            <option value="Workshop">Workshop</option>
+            <option value="AI-Powered Workshop">AI-Powered Workshop</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <div id="customTypeWrapper" style="display:none;">
+          <label for="customClassType">Please specify:
+            <input type="text" id="customClassType" />
+          </label>
+        </div>
+        <label for="courseDate">Date:
+          <input type="date" id="courseDate" name="courseDate" required />
+        </label>
+        <button type="submit">Generate Certificate</button>
+      </form>
     </div>
 
-    <!-- Bottom Buttons -->
-    <div class="no-print" style="margin-top: 2rem; text-align: center;">
-      <!-- Print -->
-      <button id="printBtn">🖨️ Print Certificate</button>
-      <!-- Google Sheet -->
-      <a href="https://docs.google.com/spreadsheets/d/1Qt1GTp-8UrOOJ63uPxDASkVUjbAVpbpyDal5jJ46Nv8/edit?usp=drive_link" target="_blank">
+    <div class="certificate" id="certificateOutput">
+      <p class="student-name"><span id="certNameHeader">[Student Name]</span></p>
+      <img src="logo.png" class="logo" alt="3Strand.ai Logo" />
+      <h1 class="title">Certificate of Completion</h1>
+      <p class="body-text">
+        This certificate certifies that <strong><span id="certNameBody">[Student Name]</span></strong>
+      </p>
+      <p class="body-text">
+        has completed the <strong><span id="certCourse">[Course Name]</span></strong> <strong><span id="certClassType">course</span></strong> offered by 
+      </p>
+      <p class="body-text">  
+        <strong>3 Strand Solutions</strong>, powered by <strong>3Strand.ai</strong>.
+      </p>
+      <p class="body-text">Date: <span id="certDate">[Date]</span></p>
+      <p class="cert-id">Certificate ID: <span id="certId">3SAI-YYYY-MM-XXXXX</span></p>
+
+      <div class="signatures">
+        <div>
+          <img src="Signature_Greg.jpg" class="signature-img" alt="Greg Dawson Signature" />
+          <p><strong>Greg Dawson</strong><br>Founder</p>
+        </div>
+        <div>
+          <img src="Signature_Bailey.jpg" class="signature-img" alt="Bailey Dawson Signature" />
+          <p><strong>Bailey Dawson</strong><br>Facilitator</p>
+        </div>
+      </div>
+
+      <!-- Bottom Buttons -->
+      <div class="no-print" style="margin-top: 2rem; text-align: center;">
+        <button id="printBtn">🖨️ Print Certificate</button>
+        <a href="https://docs.google.com/spreadsheets/d/1Qt1GTp-8UrOOJ63uPxDASkVUjbAVpbpyDal5jJ46Nv8/edit" target="_blank">
+          <button type="button">📊 View Google Sheet</button>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1w2PJfgr0h7zc0C7Ax-Goc8oj83TvranA" target="_blank">
+          <button type="button">📁 Open Certificate Folder</button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BADGES TAB -->
+  <section id="badgesTab" class="tab-content" style="display:none;">
+    <div class="form-container">
+      <h2>Issue Badge</h2>
+      <form id="badgeForm">
+        <label for="studentNameBadge">Student's Name:
+          <input type="text" id="studentNameBadge" required />
+        </label>
+        <label for="badgeType">Select Badge:
+          <select id="badgeType" required>
+            <option value="">— Choose a Badge —</option>
+            <option value="badge1.png">AI Assistant Integrator</option>
+            <option value="badge2.png">Prompt Engineering Specialist</option>
+            <option value="badge3.png">Test Automation Architect</option>
+            <option value="badge4.png">Secure Code Reviewer</option>
+            <option value="badge5.png">AI Feature Integrator</option>
+            <option value="badge6.png">AI Efficiency Capstone</option>
+          </select>
+        </label>
+        <label for="badgeDate">Date:
+          <input type="date" id="badgeDate" required />
+        </label>
+        <button type="submit">Issue Badge</button>
+      </form>
+    </div>
+
+    <!-- Badge Preview -->
+    <div id="badgePreview" class="badge-preview" style="display:none; text-align:center;">
+      <img id="badgeImage" src="" alt="Badge" style="max-width:200px;"/>
+      <p id="badgeTitle" style="font-weight:bold;"></p>
+      <p id="badgeDateDisplay" style="font-style:italic;"></p>
+    </div>
+
+    <!-- Copy/Folder Buttons -->
+    <div class="no-print" style="margin-top:2rem; text-align:center;">
+      <!-- View same sheet -->
+      <a href="https://docs.google.com/spreadsheets/d/1Qt1GTp-8UrOOJ63uPxDASkVUjbAVpbpyDal5jJ46Nv8/edit" target="_blank">
         <button type="button">📊 View Google Sheet</button>
       </a>
-      <!-- Certificate Folder -->
-      <a href="https://drive.google.com/drive/folders/1w2PJfgr0h7zc0C7Ax-Goc8oj83TvranA?usp=drive_link" target="_blank">
-        <button type="button">📁 Open Certificate Folder</button>
+      <!-- Open badge-specific folder -->
+      <a href="https://drive.google.com/drive/folders/1sBLrcjnY4nkXTOJC1_pKwbmekPlUGqEL" target="_blank">
+        <button type="button">📁 Open Badge Folder</button>
       </a>
-      <!-- Certificate URL -->
-      <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('certLinkBtn').href)">
-        📋 Copy Certificate URL
-      </button>
-      <!-- LinkedIn URL -->
-      <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('linkedInLinkBtn').href)">
-        📋 Copy LinkedIn URL
-      </button>
     </div>
-  </div>
+  </section>
 
-  <script src="certificate.js?v=1.0.12"></script>
+  <script src="certificate.js?v=1.0.14"></script>
 </body>
 </html>

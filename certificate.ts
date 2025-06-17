@@ -1,78 +1,97 @@
+// certificate.ts
+
+// 0) Your deployed Apps Script URL:
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzidgDk7ym_x9V5KMMFR-JGfJDK4x_PkqiK4CsKTeL1G4y5d8siyUXxQ92M_636SFmypw/exec";
+
+// 1) Tab switching
+function setupTabs(): void {
+  const certTab  = document.getElementById("tabCertificates")!;
+  const badgeTab = document.getElementById("tabBadges")!;
+  const certSec  = document.getElementById("certificatesTab")!;
+  const badgeSec = document.getElementById("badgesTab")!;
+
+  certTab.addEventListener("click", () => {
+    certTab.classList.add("active");
+    badgeTab.classList.remove("active");
+    certSec.style.display  = "";
+    badgeSec.style.display = "none";
+  });
+  badgeTab.addEventListener("click", () => {
+    badgeTab.classList.add("active");
+    certTab.classList.remove("active");
+    badgeSec.style.display = "";
+    certSec.style.display  = "none";
+  });
+}
+
+// 2) Helper to set textContent if element exists
+function setText(id: string, txt: string): void {
+  const el = document.getElementById(id);
+  if (el) el.textContent = txt;
+}
+
+// 3) Generate Certificate
 function generateCertificate(): void {
-  // 1. Read form inputs
-  const nameInput = document.getElementById("studentName") as HTMLInputElement;
-  const courseInput = document.getElementById("courseName") as HTMLInputElement;
-  const dateInput = document.getElementById("courseDate") as HTMLInputElement;
-  const classTypeSelect = document.getElementById("classType") as HTMLSelectElement;
-  const customClassTypeInput = document.getElementById("customClassType") as HTMLInputElement;
+  // 3.1) Read inputs
+  const nameInput           = document.getElementById("studentName")   as HTMLInputElement;
+  const courseInput         = document.getElementById("courseName")    as HTMLInputElement;
+  const dateInput           = document.getElementById("courseDate")    as HTMLInputElement;
+  const classTypeSelect     = document.getElementById("classType")     as HTMLSelectElement;
+  const customClassTypeInput= document.getElementById("customClassType") as HTMLInputElement;
 
-  const name = nameInput.value;
-  const course = courseInput.value;
-  const dateStr = dateInput.value;
+  const name    = nameInput.value.trim();
+  const course  = courseInput.value.trim();
+  const dateStr = dateInput.value;            // "YYYY-MM-DD"
 
-  // 2. Generate derived values
-  const [year, month] = dateStr.split("-");
-  const formattedDate = `${month}/${dateStr.split("-")[2]}/${year}`;
-  const expirationYear = (parseInt(year, 10) + 1).toString();
-  const random = Math.floor(Math.random() * 90000 + 10000);
-  const certId = `3SAI-${year}-${month}-${random}`;
+  // 3.2) Derived values
+  const [year, month, day]  = dateStr.split("-");
+  const formattedDate       = `${month}/${day}/${year}`;
+  const issuanceMonth       = ("0" + month).slice(-2);              // zero-pad
+  const expirationYear      = (parseInt(year,10) + 1).toString();
+  const expirationMonth     = issuanceMonth;
+  const random              = Math.floor(Math.random()*90000 + 10000);
+  const certId              = `3SAI-${year}-${issuanceMonth}-${random}`;
 
-  const selectedType = classTypeSelect.value;
-  const classType = selectedType === "Other" ? customClassTypeInput.value : selectedType;
+  // determine classType
+  const sel       = classTypeSelect.value;
+  const classType = sel === "Other" ? customClassTypeInput.value.trim() : sel;
 
-  // 3. Build certificate URL and LinkedIn URL
-  const certUrl = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
-
+  // 3.3) URLs
+  const certUrl      = `https://courtneylanier.github.io/CertGen/certificates/${certId}.pdf`;
   const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
-  const certName = `${course} ${classType}`;
-  const issuer = "3 Strand Solutions";
+  const certName     = `${course} ${classType}`;
+  const orgId        = "9542708";  // ← your LinkedIn Org ID
 
-  const linkedInUrl = `${linkedInBase}` +
-    `&name=${encodeURIComponent(certName)}` +
-    `&organizationName=${encodeURIComponent(issuer)}` +
-    `&issueYear=${encodeURIComponent(year)}` +
-    `&issueMonth=${encodeURIComponent(month)}` +
-    `&expirationYear=${encodeURIComponent(expirationYear)}` +
-    `&expirationMonth=${encodeURIComponent(month)}` +
-    `&certificationId=${encodeURIComponent(certId)}` +
-    `&certificationUrl=${encodeURIComponent(certUrl)}`;
+  const linkedInUrl = [
+    linkedInBase,
+    `name=${encodeURIComponent(certName)}`,
+    `organizationId=${encodeURIComponent(orgId)}`,
+    `issueYear=${encodeURIComponent(year)}`,
+    `issueMonth=${encodeURIComponent(issuanceMonth)}`,
+    `expirationYear=${encodeURIComponent(expirationYear)}`,
+    `expirationMonth=${encodeURIComponent(expirationMonth)}`,
+    `certificationId=${encodeURIComponent(certId)}`,
+    `certificationUrl=${encodeURIComponent(certUrl)}`
+  ].join("&");
 
-  // 4. Update on‐page certificate preview, with null‐checks
-  const headerEl = document.getElementById("certNameHeader");
-  if (headerEl) headerEl.textContent = name;
+  // 3.4) Update on-page preview
+  setText("certNameHeader", name);
+  setText("certNameBody",   name);
+  setText("certCourse",     course);
+  setText("certClassType",  classType);
+  setText("certDate",       formattedDate);
+  setText("certId",         certId);
 
-  const bodyNameEl = document.getElementById("certNameBody");
-  if (bodyNameEl) bodyNameEl.textContent = name;
-
-  const courseEl = document.getElementById("certCourse");
-  if (courseEl) courseEl.textContent = course;
-
-  const typeEl = document.getElementById("certClassType");
-  if (typeEl) typeEl.textContent = classType;
-
-  const dateEl = document.getElementById("certDate");
-  if (dateEl) dateEl.textContent = formattedDate;
-
-  const idEl = document.getElementById("certId");
-  if (idEl) idEl.textContent = certId;
-
-  // Set the window title for PDF filename
   document.title = certId;
+  document.getElementById("certificateOutput")?.scrollIntoView({ behavior: "smooth" });
 
-  // 6. Scroll to preview
-  const previewEl = document.getElementById("certificateOutput");
-  if (previewEl) {
-    previewEl.scrollIntoView({ behavior: "smooth" });
-  }
+  // 3.5) Update bottom-buttons
+  const certLinkBtn     = document.getElementById("certLinkBtn")       as HTMLAnchorElement | null;
+  const linkedInBtnCert = document.getElementById("linkedInLinkBtn")  as HTMLAnchorElement | null;
+  if (certLinkBtn)     certLinkBtn.href     = certUrl;
+  if (linkedInBtnCert) linkedInBtnCert.href = linkedInUrl;
 
-  // 5. Update bottom-buttons links if they exist
-  const certLinkBtn = document.getElementById("certLinkBtn") as HTMLAnchorElement | null;
-  if (certLinkBtn) certLinkBtn.href = certUrl;
-
-  const linkedInLinkBtn = document.getElementById("linkedInLinkBtn") as HTMLAnchorElement | null;
-  if (linkedInLinkBtn) linkedInLinkBtn.href = linkedInUrl;
-
-  // 7. Fire off sheet update in background (no on-screen messaging)
+  // 3.6) Fire off Apps Script (log + PDF gen)
   const payload = {
     name,
     course,
@@ -81,38 +100,129 @@ function generateCertificate(): void {
     certId,
     certUrl,
     linkedInUrl,
-    savePdf: true      // ← Add this line
+    savePdf: true
   };
   const query = new URLSearchParams({ payload: JSON.stringify(payload) });
 
-  fetch(`https://script.google.com/macros/s/AKfycbzNscEUEzalVBEPwMw3jHwHeozlEgXt_wrArRsJ74pKRopyLUauDeAS3JuH42sgeIW4DQ/exec?${query}`)
-    .then(res => res.text())
-    .then(response => console.log("Sheet response:", response))
-    .catch(err => console.error("Sheet update failed:", err));
+  fetch(`${WEBAPP_URL}?${query.toString()}`)
+    .then(r => r.text())
+    .then(txt => console.log("Certificate logged:", txt))
+    .catch(err => console.error("Certificate update failed:", err));
 }
 
+// 4) Generate Badge
+let lastBadgeLinkedInUrl = "";
+let lastBadgePdfUrl      = "";
+
+function generateBadge(): void {
+  // 4.1) Read inputs
+  const nameInput   = document.getElementById("studentNameBadge") as HTMLInputElement;
+  const badgeSelect = document.getElementById("badgeType")       as HTMLSelectElement;
+  const dateInput   = document.getElementById("badgeDate")       as HTMLInputElement;
+
+  const name      = nameInput.value.trim();
+  const badgeFile = badgeSelect.value;                             // e.g. "badge1.png"
+  const badgeName = badgeSelect.selectedOptions[0].textContent!.trim();
+  const dateStr   = dateInput.value;                               // "YYYY-MM-DD"
+
+  // 4.2) Derived values
+  const [year, month, day] = dateStr.split("-");
+  const formattedDate      = `${month}/${day}/${year}`;
+
+  // expiration one year out
+  const exp = new Date(parseInt(year,10), parseInt(month,10)-1, parseInt(day,10));
+  exp.setFullYear(exp.getFullYear()+1);
+  const expYear  = exp.getFullYear().toString();
+  const expMonth = ("0" + (exp.getMonth()+1)).slice(-2);
+
+  const random  = Math.floor(Math.random()*90000+10000);
+  const badgeId = `BADGE-${year}-${expMonth}-${random}`;
+
+  // 4.3) URLs + deep-link
+  const badgeUrl     = `https://courtneylanier.github.io/CertGen/badges/${encodeURIComponent(badgeFile)}`;
+  const linkedInBase = "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME";
+  const orgId        = "9542708";
+
+  lastBadgeLinkedInUrl = [
+    linkedInBase,
+    `name=${encodeURIComponent(badgeName)}`,
+    `organizationId=${encodeURIComponent(orgId)}`,
+    `issueYear=${encodeURIComponent(year)}`,
+    `issueMonth=${encodeURIComponent(("0"+month).slice(-2))}`,
+    `expirationYear=${encodeURIComponent(expYear)}`,
+    `expirationMonth=${encodeURIComponent(expMonth)}`,
+    `certificationId=${encodeURIComponent(badgeId)}`,
+    `certificationUrl=${encodeURIComponent(badgeUrl)}`
+  ].join("&");
+
+  // 4.4) Preview badge
+  (document.getElementById("badgeImage") as HTMLImageElement).src = badgeFile;
+  setText("badgeTitle",       badgeName);
+  setText("badgeDateDisplay", formattedDate);
+  document.getElementById("badgePreview")!.style.display = "block";
+
+  // 4.5) Send to Apps Script (log + PDF gen)
+  const payload = {
+    name,
+    badgeName,
+    badgeDate: formattedDate,
+    badgeId,
+    badgeUrl,
+    badgeLinkedInUrl: lastBadgeLinkedInUrl,
+    _type: "badge",
+    savePdf: true
+  };
+  const query = new URLSearchParams({ payload: JSON.stringify(payload) });
+
+  fetch(`${WEBAPP_URL}?${query.toString()}`)
+    .then(r => r.text())
+    .then(txt => {
+      console.log("Badge logged:", txt);
+      // extract PDF link if your Apps Script returns it:
+      const parts = txt.split("Badge PDF:");
+      lastBadgePdfUrl = parts[1]?.trim() || "";
+    })
+    .catch(err => console.error("Badge update failed:", err));
+}
+
+// 5) Copy–buttons for badges
+function setupBadgeCopyButtons(): void {
+  document.getElementById("copyLinkedInBadgeBtn")!
+    .addEventListener("click", () => {
+      if (!lastBadgeLinkedInUrl) {
+        return alert("Generate a badge first.");
+      }
+      navigator.clipboard.writeText(lastBadgeLinkedInUrl);
+      alert("LinkedIn badge link copied");
+    });
+
+  document.getElementById("copyBadgePdfBtn")!
+    .addEventListener("click", () => {
+      if (!lastBadgePdfUrl) {
+        return alert("Generate a badge & PDF first.");
+      }
+      navigator.clipboard.writeText(lastBadgePdfUrl);
+      alert("Badge PDF URL copied");
+    });
+}
+
+// 6) Print handler
 function printCertificate(): void {
   window.print();
 }
 
+// 7) Setup all event listeners
 function setupEventListeners(): void {
-  const form = document.getElementById("certificateForm");
-  const printBtn = document.getElementById("printBtn");
-  const classTypeSelect = document.getElementById("classType") as HTMLSelectElement | null;
-  const customTypeWrapper = document.getElementById("customTypeWrapper") as HTMLElement | null;
+  setupTabs();
 
-  form?.addEventListener("submit", e => {
-    e.preventDefault();
-    generateCertificate();
-  });
+  document.getElementById("certificateForm")!
+    .addEventListener("submit", e => { e.preventDefault(); generateCertificate(); });
+  document.getElementById("printBtn")!
+    .addEventListener("click", printCertificate);
 
-  printBtn?.addEventListener("click", printCertificate);
-
-  classTypeSelect?.addEventListener("change", () => {
-    if (customTypeWrapper) {
-      customTypeWrapper.style.display = classTypeSelect.value === "Other" ? "block" : "none";
-    }
-  });
+  document.getElementById("badgeForm")!
+    .addEventListener("submit", e => { e.preventDefault(); generateBadge(); });
+  setupBadgeCopyButtons();
 }
 
 document.addEventListener("DOMContentLoaded", setupEventListeners);
