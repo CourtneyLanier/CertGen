@@ -1,7 +1,6 @@
 "use strict";
 /********************************************************************
- * certificate.ts — certs ▸ badges ▸ 1200×1200 PNG (single folder)
- * Posts with mode:"no-cors" and waits for PDF-row POST before PNG POST.
+ * certificate.ts — certs ▸ badges ▸ PNG (buttons hidden in PNG)
  ********************************************************************/
 /*---------------------------------------------------------------*
  * 0) Web-app endpoint                                           *
@@ -17,7 +16,7 @@ function toast(msg, ms = 1700) {
         box.id = "toast";
         box.style.cssText =
             "position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);" +
-                "background:#003366;color:#fff;padding:.45rem 1rem;border-radius:6px;" +
+                "background:#003366;color:#fff;padding:.5rem 1rem;border-radius:6px;" +
                 "font-size:.85rem;z-index:10000;opacity:.9;pointer-events:none";
         document.body.appendChild(box);
     }
@@ -26,7 +25,7 @@ function toast(msg, ms = 1700) {
     setTimeout(() => (box.style.display = "none"), ms);
 }
 /*---------------------------------------------------------------*
- * 3) POST wrapper (no-cors, opaque)                             *
+ * 3) POST wrapper (mode:'no-cors')                              *
  *---------------------------------------------------------------*/
 const postJSON = (data) => fetch(WEBAPP_URL, {
     method: "POST",
@@ -34,7 +33,7 @@ const postJSON = (data) => fetch(WEBAPP_URL, {
     body: JSON.stringify(data)
 });
 /*---------------------------------------------------------------*
- * 4) Tabs / text helpers                                        *
+ * 4) Tabs & text helper                                         *
  *---------------------------------------------------------------*/
 function setupTabs() {
     const [certTab, badgeTab] = [
@@ -45,25 +44,15 @@ function setupTabs() {
         document.getElementById("certificatesTab"),
         document.getElementById("badgesTab")
     ];
-    certTab.onclick = () => {
-        certTab.classList.add("active");
-        badgeTab.classList.remove("active");
-        certSec.style.display = "";
-        badgeSec.style.display = "none";
-    };
-    badgeTab.onclick = () => {
-        badgeTab.classList.add("active");
-        certTab.classList.remove("active");
-        badgeSec.style.display = "";
-        certSec.style.display = "none";
-    };
+    certTab.onclick = () => { certTab.classList.add("active"); badgeTab.classList.remove("active"); certSec.style.display = ""; badgeSec.style.display = "none"; };
+    badgeTab.onclick = () => { badgeTab.classList.add("active"); certTab.classList.remove("active"); badgeSec.style.display = ""; certSec.style.display = "none"; };
 }
 const setText = (id, txt) => void (document.getElementById(id).textContent = txt);
 /*---------------------------------------------------------------*
- * 5) Certificate generation (row ➜ THEN PNG)                    *
+ * 5) Certificate generation (row→PNG with buttons hidden)       *
  *---------------------------------------------------------------*/
 function generateCertificate() {
-    /* 5.1 gather form data */
+    /* --- form vals --- */
     const name = document.getElementById("studentName").value.trim();
     const course = document.getElementById("courseName").value.trim();
     const date = document.getElementById("courseDate").value;
@@ -72,7 +61,7 @@ function generateCertificate() {
     const type = sel === "Other" ? custom : sel;
     if (!name || !course || !date)
         return alert("Fill in all certificate fields.");
-    /* 5.2 IDs & URLs */
+    /* --- IDs & URLs --- */
     const [yy, mmRaw, dd] = date.split("-");
     const mm = ("0" + mmRaw).slice(-2);
     const certId = `3SAI-${yy}-${mm}-${Math.floor(10000 + Math.random() * 90000)}`;
@@ -88,31 +77,38 @@ function generateCertificate() {
             `certificationId=${certId}`,
             `certificationUrl=${encodeURIComponent(strandCredUrl)}`
         ].join("&");
-    /* 5.3 preview */
+    /* --- preview --- */
     setText("certNameHeader", name);
     setText("certNameBody", name);
     setText("certCourse", course);
     setText("certClassType", type);
     setText("certDate", `${mmRaw}/${dd}/${yy}`);
     setText("certId", certId);
-    /* 5.4 POST row + PDF FIRST */
+    /* --- POST row + PDF --- */
     toast("Uploading certificate row…");
     postJSON({
-        name, course, classType: type,
-        date: `${mmRaw}/${dd}/${yy}`,
+        name, course, classType: type, date: `${mmRaw}/${dd}/${yy}`,
         certId, certUrl, linkedInUrl, strandCredUrl,
         savePdf: true
     })
         .then(() => {
         toast("Row & PDF done");
-        /* 5.5 THEN capture PNG and POST */
+        /* --- PNG capture (buttons hidden) --- */
         const el = document.getElementById("certificateOutput");
         const ow = el.style.width, oh = el.style.height;
+        /* hide .no-print elements */
+        const hidden = [];
+        el.querySelectorAll(".no-print").forEach(elem => {
+            hidden.push({ el: elem, display: elem.style.display });
+            elem.style.display = "none";
+        });
         el.style.width = el.style.height = "1200px";
         return html2canvas(el, { scale: 1, backgroundColor: null })
             .then(canvas => {
+            /* restore styles */
             el.style.width = ow;
             el.style.height = oh;
+            hidden.forEach(h => h.el.style.display = h.display);
             const base64 = canvas.toDataURL("image/png").split(",")[1];
             toast("Uploading PNG…");
             return postJSON({ certId, pngBase64: base64, _type: "png" });
@@ -122,7 +118,7 @@ function generateCertificate() {
         .catch(err => { console.error(err); toast("Upload failed"); });
 }
 /*---------------------------------------------------------------*
- * 6) Badge generation                                           *
+ * 6) Badge generation (unchanged)                               *
  *---------------------------------------------------------------*/
 let lastBadgeLinkedInUrl = "";
 let lastBadgePdfUrl = "";
@@ -133,8 +129,8 @@ function generateBadge() {
     const date = document.getElementById("badgeDate").value;
     if (!name || !file || !date)
         return alert("Fill in all badge fields.");
-    const sel = document.querySelector(`#badgeType option[value="${file}"]`);
-    const title = (_a = sel.textContent) !== null && _a !== void 0 ? _a : "";
+    const opt = document.querySelector(`#badgeType option[value="${file}"]`);
+    const title = (_a = opt.textContent) !== null && _a !== void 0 ? _a : "";
     const [yy, mmRaw, dd] = date.split("-");
     const mm = ("0" + mmRaw).slice(-2);
     const badgeId = `3SAIB-${yy}-${mm}-${Math.floor(10000 + Math.random() * 90000)}`;
@@ -168,7 +164,7 @@ function generateBadge() {
         .catch(err => { console.error(err); toast("Badge upload failed"); });
 }
 /*---------------------------------------------------------------*
- * 7) Copy-link helpers                                          *
+ * 7) Copy-link buttons                                          *
  *---------------------------------------------------------------*/
 function setupBadgeCopyButtons() {
     var _a, _b;
